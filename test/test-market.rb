@@ -9,7 +9,7 @@ Minitest::Unit::autorun
 
 class TestResourced < MiniTest::Unit::TestCase
   def setup
-    @resourced = Resourced.new
+    @resourced = Resourced.new("localhost", "11212")
     @market = @resourced.market
   end
 

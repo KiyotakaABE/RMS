@@ -5,7 +5,10 @@ require 'date'
 
 
 # memo
-# マーケットで扱うorderは，複数のスレッドから同時にアクセスされる場合があるので，market自体を排他的に制御する必要がある．あるスレッドがmarketをいじっているときは，他のスレッドを待たせる必要がある．
+# 複数のagentが同時にupdateしてくると、Historyがうまく動かない。
+# 同じプロセスが短時間に連続で交換対象になってしまうことがある。
+# Market自体を排他的に扱えるようにする
+
 
 class Market
   attr_reader :array
@@ -64,6 +67,10 @@ class Market
       # headのindexがtailのindexを追い越していなければreturn
       if index_head < index_tail
         @history.add(head, tail)
+        # 上でHistoryに追加しているが、交換してagentから新たな値がupdateされるまで
+        # marketから消してしまえばそんなことする必要はなくなる（？）
+        delete(head.pid)
+        delete(tail.pid)
         return head, tail
       end
     end     
@@ -83,7 +90,7 @@ end
 # ”連続”の間隔は，クラス内のINTERVAL定数で調節
 class History
   # INTERVAL秒より短い間隔で資源交換しない
-  INTERVAL = 1
+  INTERVAL = 5
 
   def initialize
     @history = Hash.new

@@ -25,8 +25,10 @@ class ProcessAPI
     # 排他制御の必要はなし
     @ratio = nil
     Thread.start {
-      @ratio = estimate
-      sleep(FREQUENCY)
+      loop{
+        @ratio = estimate
+        sleep(FREQUENCY)
+      }
     }
   end
   
@@ -70,6 +72,7 @@ class ProcessAPI
     # priceに応じて比率を変更する
     if DEBUG
       @process.change_ratio(price)
+      @ratio = estimate # これをここでやるかはあとで再考する必要あり
     end
   end
   

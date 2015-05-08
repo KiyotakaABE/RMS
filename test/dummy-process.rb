@@ -5,14 +5,15 @@ require 'thread'
 
 class DummyProcess
   # ratioを変化させる頻度
-  RAND_FREQUENCY = 5
+  #  RAND_FREQUENCY = 5
   @@num = 0
   
   def initialize
     @ratio = rand(0.0..2.0)
     @num = @@num
     @@num += 1
-    my_print("initial_ratio:" + @ratio.to_s)
+    my_print("initial:" + @ratio.to_s)
+=begin
     Thread.start{
       loop{
         sleep(RAND_FREQUENCY)
@@ -21,9 +22,10 @@ class DummyProcess
         sleep(0.001) if @num == 2
         delta = rand(-0.2..0.2)
         @ratio += delta
-        my_print("new_ratio:" + @ratio.to_s + ", delta: " + delta.to_s)
+        # my_print("new    :" + @ratio.to_s + " (delta: " + delta.to_s + ")")
       }
     }
+=end
   end
 
   def estimate
@@ -36,7 +38,7 @@ class DummyProcess
 
   def change_ratio(price)
     @ratio = price
-    my_print("change_ratio:" + @ratio.to_s)
+    my_print("changed:" + @ratio.to_s)
   end
 
   # test用
@@ -45,6 +47,6 @@ class DummyProcess
   end
 
   def my_print(str)
-    puts "DummyProcess-" + @num.to_s + ":" + str    
+    puts "(PNum-" + @num.to_s + ") " + str    
   end
 end

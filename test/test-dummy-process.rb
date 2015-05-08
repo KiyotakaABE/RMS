@@ -37,6 +37,7 @@ class TestResourced < MiniTest::Unit::TestCase
       agent = Agent.new(nil, nil, SERVER, PORT).run
     }
     sleep(0.1)
+
     Thread.start{
       agent = Agent.new(nil, nil, SERVER, PORT).run
     }

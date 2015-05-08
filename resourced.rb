@@ -22,9 +22,16 @@ class Resourced
   public
   # marketからの通知
   def notify(order1, order2)
+    # デバッグ用プリント
+    puts("(RD    ) select :" + "(PNum-" + order1.pid.to_s + ") & (Pnum-" + order2.pid.to_s + ")")
     price = calculate_price(order1, order2)
-    order1.notify(price)
-    order2.notify(price)
+    t1 = Thread.start{
+      order1.notify(price)
+    }
+    t2 = Thread.start{
+      order2.notify(price)
+    }
+    t1.join; t2.join
   end
 
   def update(pid, pinfo, price)
